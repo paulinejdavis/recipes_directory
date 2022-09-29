@@ -52,6 +52,7 @@ Run this SQL file on the database to truncate (empty) the table, and insert the 
 
 ```bash
 psql -h 127.0.0.1 recipes_directory_test < seeds_recipe.sql
+psql -h 127.0.0.1 recipes_directory < seeds_recipes.sql
 ```
 
 ## 3. Define the class names
@@ -176,15 +177,28 @@ recipes[3].cooking_time # =>  5
 recipes[3].rating # => 5
 
 # 2
-# Get a single student
+# Get a single recipe
 
-repo = StudentRepository.new
+repo = RecipeRepository.new
 
-student = repo.find(1)
+recipe = repo.find(1)
 
-student.id # =>  1
-student.name # =>  'David'
-student.cohort_name # =>  'April 2022'
+recipe.id # =>  1
+recipe.name # =>  'Tofu Surprise'
+recipe.cooking_time # =>  5
+recipe.rating # =>  4
+
+# 4
+# Get the second recipe - Ratatouille
+
+repo = RecipeRepository.new
+
+recipe = repo.find(2)
+
+recipe.id # =>  2
+recipe.name # =>  'Ratatouille'
+recipe.cooking_time # =>  10
+recipe.rating # =>  4
 
 # Add more examples for each method
 ```
@@ -200,17 +214,17 @@ This is so you get a fresh table contents every time you run the test suite.
 ```ruby
 # EXAMPLE
 
-# file: spec/student_repository_spec.rb
+# file: spec/recipes_repository_spec.rb
 
-def reset_students_table
-  seed_sql = File.read('spec/seeds_students.sql')
-  connection = PG.connect({ host: '127.0.0.1', dbname: 'students' })
+def reset_recipes_table
+  seed_sql = File.read('spec/seeds_recipes.sql')
+  connection = PG.connect({ host: '127.0.0.1', dbname: 'recipes' })
   connection.exec(seed_sql)
 end
 
-describe StudentRepository do
+describe RecipesRepository do
   before(:each) do 
-    reset_students_table
+    reset_recipes_table
   end
 
   # (your tests will go here).
